@@ -1,6 +1,105 @@
 ﻿@page "/review"
 
 <PageTitle>Recenzje</PageTitle>
+<style type="text/css">
+.bk1{
+    background: linear-gradient(16deg, rgba(61,95,198,1) 0%, rgba(11,38,125,1) 38%, rgba(0,0,0,1) 100%);
+    border-radius:20px;
+    color:white;
+    margin:10px;
+    float:left;
+    width:500px;
+    height:200px;
+    text-shadow: #000000 0.6em 0.6em 0.6em;
+}
+.bk2{
+    margin:10px;
+    color:white;
+    float:left;
+    width:48%;
+    height:30px;
+    text-shadow: #000000 0.6em 0.6em 0.6em;
+}
+.bk3{
+    margin:10px;
+    color:white;
+    float:left;
+    width:48%;
+    height:120px;
+    width:440px;
+    text-shadow: #000000 0.6em 0.6em 0.6em;
+}
+.bk4{
+    background-color:black;
+    border-radius:20px;
+    margin:10px;
+    padding:5px;
+    color:white;
+    clear:both;
+    width:500px;
+    height:280px;
+}
+</style>
+<div>
+    @if(clients != null)
+    {
+           @foreach(var i in clients)
+            {
+                   <div class="bk1">
+                    <div class="bk2">Przywoływacz: @i.SummonerName</div>
+                    <div class="bk3">@i.Rev</div>
+                   </div>
+            }
+     }
+     else
+     {
+            <div>Proszę czekać trwa poberanie recenzji...</div>
+     }
+</div>
+<div class="bk4">
+        <h4>Oceń nasze usługi</h4>
+        <div>
+              <div>
+                <div>
+                    <label for="summonern">Nazwa przywoływacza</label>
+                    <input type="text" class="form-control" id="summonern" @bind-value="@summonern">
+                </div>
+                <div>
+                    <label for="3review">Recenzja</label>
+                    <input type="text" class="form-control" id="revuu" size="30">
+                </div>
+                <button class="btn btn-primary mt-5" @onclick="AddStudent">Dodaj</button>
+              </div>
+              <div ></div>
+              <div ></div>
+        </div>
+    </div>
 
-<h1>Siema</h1>
-<p>nr albumu:  109484</p>
+@code {
+
+    List<ClientsLoL> clients;
+    string? summonern;
+    string? revuu;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(1000);
+        clients = new List<ClientsLoL>()
+        {
+           new ClientsLoL(){ StudentId = 1,SummonerName="Werka UWU",Rev=" jest ok" },
+           new ClientsLoL(){ StudentId = 2,SummonerName="Spin",Rev=" Good coach, gave good tips throughout the game and gave me tips at the end of the game. He was even kind enough to give me 4 tips I should work on after the game to improve myself." },
+        };
+    }
+     void AddStudent()
+        {
+            var student = new ClientsLoL
+            {
+                SummonerName = summonern,
+                Rev = revuu
+            };
+
+            student.StudentId = clients.Max(s => s.StudentId) + 1;
+            clients.Add(student);
+        }
+}
